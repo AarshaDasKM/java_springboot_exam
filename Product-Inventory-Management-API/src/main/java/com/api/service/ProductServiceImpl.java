@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.api.entity.Products;
 import com.api.entity.Quantitydiscounts;
 import com.api.repository.ProductRepository;
+import com.api.repository.PromoCodesRepository;
 import com.api.repository.QuantitydiscountsRepository;
 
 @Service
@@ -20,6 +21,9 @@ public class ProductServiceImpl implements ProductService {
 	ProductRepository productRepository;
 	@Autowired
 	QuantitydiscountsRepository quantitydiscountsRepository;
+	@Autowired
+	PromoCodesRepository promoCodesRepository;
+	
 	@Override
 	public List priceCalculation(String productId, int quantity, String promoCode, String userType) {
     Optional<Products> product=productRepository.findById(productId);
@@ -33,6 +37,13 @@ public class ProductServiceImpl implements ProductService {
 		Float discount =originalquant.getDiscountPercentage();
 	 float finalPrice=originalPrice-(originalPrice*discount)/100;
 	 result.add(finalPrice);
+	 Optional<Quantitydiscounts> promocode=promoCodesRepository.findByCode(promoCode);
+	 Quantitydiscounts originalpromocode=promocode.get();
+	Float discountper =originalpromocode.getDiscountPercentage();
+	result.add(promocode);
+	 result.add(discountper);
+	 
+	 
 		return result;
 	}
 
