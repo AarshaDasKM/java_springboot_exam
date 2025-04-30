@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.entity.Products;
+import com.api.entity.Quantitydiscounts;
 import com.api.repository.ProductRepository;
 
 @Service
@@ -25,6 +26,10 @@ public class ProductServiceImpl implements ProductService {
 	 List result=new LinkedList<>();
 	 result.add(productId);
 	 result.add(originalPrice);
+	 Optional<Quantitydiscounts> quantitydiscount=productRepository.findById(productId);
+		Products originalProduct=product.get();
+		Float originalPrice =originalProduct.getBasePrice();
+//	 float finalPrice=originalPrice*
 		return result;
 	}
 
